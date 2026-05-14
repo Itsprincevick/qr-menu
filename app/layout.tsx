@@ -5,7 +5,7 @@ import "./globals.css";
 const geist = Geist({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Jahz Empire Kitchen",
+  title: "Jahz Empire",
   description: "Authentic Nigerian food. Order via WhatsApp.",
 };
 

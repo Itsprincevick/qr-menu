@@ -2,7 +2,7 @@
 
 import { useCart, removeFromCart } from "./AddToCartButton";
 
-const WHATSAPP_NUMBER = "2348000000000"; // ← replace with your number
+const WHATSAPP_NUMBER = "+2347062754478"; // ← replace with your number
 const VAT_RATE = 0.075; // 7.5%
 
 // ── Add item IDs here to exempt them from VAT ──────────────────────

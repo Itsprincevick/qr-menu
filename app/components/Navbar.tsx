@@ -12,7 +12,7 @@ export default function Navbar() {
         </Link>
         <Link
           href="/menu"
-          className="bg-[#455041] hover:bg-amber-600 transition-colors text-amber-400 text-sm font-semibold px-5 py-2 rounded-full"
+          className="bg-[#455041] hover:bg-[#3a4235] transition-colors text-amber-400 text-sm font-semibold px-5 py-2 rounded-full"
         >
           View Menu
         </Link>

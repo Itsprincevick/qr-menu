@@ -62,7 +62,7 @@ export default function AddToCartButton({ item }: Props) {
       className={`w-full mt-3 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${
         added
           ? "bg-green-500 text-white"
-          : "bg-[#455041] hover:bg-amber-600 text-amber-400"
+          : "bg-[#455041] hover:bg-[#3a4235] text-amber-400"
       }`}
     >
       {added ? "✓ Added!" : "Add to Order"}

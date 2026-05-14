@@ -44,5 +44,5 @@ export const menuItems: MenuItem[] = [
   { id: 14, name: "Zobo (Hibiscus)", description: "Chilled hibiscus drink with ginger and pineapple", price: 500, category: "drinks", emoji: "🌺" },
   { id: 15, name: "Kunu", description: "Creamy millet drink lightly spiced", price: 500, category: "drinks", emoji: "🥛" },
   { id: 16, name: "Chapman", description: "Classic Nigerian cocktail — Fanta, Sprite, Grenadine, cucumber", price: 1000, category: "drinks", emoji: "🍹" },
-  { id: 17, name: "Cold Water / Bottled Water", description: "Chilled 75cl table water", price: 200, category: "drinks", emoji: "💧" },
+  { id: 17, name: "Bottled Water", description: "Chilled 75cl table water", price: 500, category: "drinks", emoji: "💧" },
 ];
