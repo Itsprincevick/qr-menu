@@ -1,58 +1,79 @@
-import Link from "next/link";
-import Navbar from "../components/Navbar";
+"use client";
 
-export default function Home() {
+import { useState } from "react";
+import Navbar from "../components/Navbar";
+import AddToCartButton from "../components/AddToCartButton";
+import CartDrawer from "../components/CartDrawer";
+import { menuItems, categories } from "../data/menu";
+
+export default function MenuPage() {
+  const [activeCategory, setActiveCategory] = useState("all");
+
+  const filtered =
+    activeCategory === "all"
+      ? menuItems
+      : menuItems.filter((item) => item.category === activeCategory);
+
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-stone-50">
-        {/* Hero */}
-        <section className="pt-32 pb-20 px-6 text-center max-w-2xl mx-auto">
-          <div className="inline-block bg-amber-100 text-amber-700 text-xs font-semibold tracking-widest uppercase px-4 py-1.5 rounded-full mb-6">
-            Authentic Nigerian Kitchen
+      <main className="min-h-screen bg-stone-50 pt-24 pb-48 px-6">
+        <div className="max-w-4xl mx-auto">
+          {/* Header */}
+          <div className="mb-8 text-center">
+            <h1 className="text-4xl font-extrabold text-stone-900 tracking-tight mb-2">
+              Our Menu
+            </h1>
+            <p className="text-stone-400 text-base">
+              Add items to your order, then send via WhatsApp 🍽️
+            </p>
           </div>
 
-          <h1 className="text-5xl md:text-6xl font-extrabold text-stone-900 leading-tight tracking-tight mb-6">
-            Good Food,<br />
-            <span className="text-amber-500">Made Fresh.</span>
-          </h1>
+          {/* Category Filter */}
+          <div className="flex gap-2 flex-wrap justify-center mb-10">
+            {categories.map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => setActiveCategory(cat.id)}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-150 ${
+                  activeCategory === cat.id
+                    ? "bg-stone-900 text-white"
+                    : "bg-white border border-stone-200 text-stone-600 hover:border-stone-400"
+                }`}
+              >
+                {cat.label}
+              </button>
+            ))}
+          </div>
 
-          <p className="text-stone-500 text-lg leading-relaxed mb-10 max-w-md mx-auto">
-            From smoky Jollof to rich Egusi soup — explore our menu and place
-            your order directly on WhatsApp.
-          </p>
-
-          <Link
-            href="/menu"
-            className="inline-block bg-stone-900 hover:bg-stone-700 transition-colors text-white font-semibold text-base px-8 py-4 rounded-full"
-          >
-            Browse Menu →
-          </Link>
-        </section>
-
-        {/* Feature cards */}
-        <section className="max-w-3xl mx-auto px-6 pb-24 grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {[
-            { emoji: "🍲", title: "Fresh Daily", desc: "Everything is cooked fresh every day — no shortcuts." },
-            { emoji: "📱", title: "Order via WhatsApp", desc: "Pick your items and send your order in one tap." },
-            { emoji: "⚡", title: "Fast Service", desc: "We prep quickly so your food arrives hot." },
-          ].map((card) => (
-            <div
-              key={card.title}
-              className="bg-white border border-stone-100 rounded-2xl p-6 text-center shadow-sm"
-            >
-              <div className="text-3xl mb-3">{card.emoji}</div>
-              <h3 className="font-bold text-stone-800 mb-1">{card.title}</h3>
-              <p className="text-stone-400 text-sm leading-relaxed">{card.desc}</p>
-            </div>
-          ))}
-        </section>
-
-        {/* Footer */}
-        <footer className="border-t border-stone-100 py-6 text-center text-stone-400 text-sm">
-          © {new Date().getFullYear()} Jahz Empire Kitchen. All rights reserved.
-        </footer>
+          {/* Menu Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {filtered.map((item) => (
+              <div
+                key={item.id}
+                className="bg-white border border-stone-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow"
+              >
+                <div className="text-4xl mb-3">{item.emoji}</div>
+                <h3 className="font-bold text-stone-800 text-base mb-1">
+                  {item.name}
+                </h3>
+                <p className="text-stone-400 text-sm leading-relaxed mb-3">
+                  {item.description}
+                </p>
+                <div className="flex items-center justify-between">
+                  <span className="text-amber-600 font-bold text-base">
+                    ₦{item.price.toLocaleString()}
+                  </span>
+                </div>
+                <AddToCartButton item={item} />
+              </div>
+            ))}
+          </div>
+        </div>
       </main>
+
+      {/* Floating WhatsApp Cart */}
+      <CartDrawer />
     </>
   );
 }

@@ -2,14 +2,27 @@
 
 import { useCart, removeFromCart } from "./AddToCartButton";
 
-const WHATSAPP_NUMBER = "+2347062754478"; // ← replace with your number
+const WHATSAPP_NUMBER = "2348000000000"; // ← replace with your number
+const VAT_RATE = 0.075; // 7.5%
+
+// ── Add item IDs here to exempt them from VAT ──────────────────────
+// Currently: Bottled Water (id: 17)
+// Add more IDs as needed e.g. [17, 18, 19]
+const VAT_EXEMPT_IDS: number[] = [17];
 
 export default function CartDrawer() {
   const cart = useCart();
 
   if (cart.length === 0) return null;
 
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+  const vatableSubtotal = cart
+    .filter((item) => !VAT_EXEMPT_IDS.includes(item.id))
+    .reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+  const vat = vatableSubtotal * VAT_RATE;
+  const total = subtotal + vat;
 
   const buildWhatsAppMessage = () => {
     const lines = cart.map(
@@ -21,7 +34,9 @@ export default function CartDrawer() {
       "",
       ...lines,
       "",
-      `*Total: ₦${total.toLocaleString()}*`,
+      `Subtotal: ₦${subtotal.toLocaleString()}`,
+      `VAT (7.5%): ₦${Math.round(vat).toLocaleString()}`,
+      `*Total: ₦${Math.round(total).toLocaleString()}*`,
     ].join("\n");
     return encodeURIComponent(message);
   };
@@ -35,12 +50,18 @@ export default function CartDrawer() {
           Your Order
         </p>
 
+        {/* Items list */}
         <ul className="space-y-2 max-h-40 overflow-y-auto mb-3">
           {cart.map((item) => (
             <li key={item.id} className="flex items-center justify-between text-sm">
               <span className="text-stone-700">
                 {item.emoji} {item.name}{" "}
                 <span className="text-stone-400">x{item.quantity}</span>
+                {VAT_EXEMPT_IDS.includes(item.id) && (
+                  <span className="ml-1 text-[10px] text-stone-300 font-medium">
+                    (no VAT)
+                  </span>
+                )}
               </span>
               <div className="flex items-center gap-3">
                 <span className="text-stone-800 font-medium">
@@ -57,13 +78,23 @@ export default function CartDrawer() {
           ))}
         </ul>
 
-        <div className="flex items-center justify-between border-t border-stone-100 pt-3 mb-3">
-          <span className="text-sm font-semibold text-stone-600">Total</span>
-          <span className="text-base font-bold text-stone-900">
-            ₦{total.toLocaleString()}
-          </span>
+        {/* Breakdown */}
+        <div className="border-t border-stone-100 pt-3 mb-3 space-y-1.5">
+          <div className="flex items-center justify-between text-sm text-stone-500">
+            <span>Subtotal</span>
+            <span>₦{subtotal.toLocaleString()}</span>
+          </div>
+          <div className="flex items-center justify-between text-sm text-stone-500">
+            <span>VAT (7.5%)</span>
+            <span>₦{Math.round(vat).toLocaleString()}</span>
+          </div>
+          <div className="flex items-center justify-between text-base font-bold text-stone-900 pt-1 border-t border-stone-100">
+            <span>Total</span>
+            <span>₦{Math.round(total).toLocaleString()}</span>
+          </div>
         </div>
 
+        {/* WhatsApp button */}
         <a
           href={whatsappUrl}
           target="_blank"
